@@ -39,7 +39,7 @@ class MergeExcelData:
             return 'накопление', retirement_date
         else:
             return 'выплата', current_date
-    def merge_data(self):
+    def merge_data(self) -> pd.DataFrame:
         """
         Объединение фреймов для последующего расчета
         """
@@ -128,19 +128,19 @@ class ProcessPensionsFlow:
                 if payment_date.month == 1:
                     current_pension *= (1 + self.rate)
 
-                # Преобразуем результаты в DataFrame
-                pension_flows = pd.DataFrame(results)
+        # Преобразуем результаты в DataFrame
+        pension_flows = pd.DataFrame(results)
 
-                # Сохранение результатов в новый Excel файл
-                output_path = self.output_path
-                pension_flows.to_excel(output_path, index=False)
-                pension_flows.head()
-            return pension_flows
+        # Сохранение результатов в новый Excel файл
+        output_path = self.output_path
+        pension_flows.to_excel(output_path, index=False)
+        pension_flows.head()
+        return pension_flows
 # Замените file_path до полного пути директории с файлом
-create_data = MergeExcelData(file_path = r'.\datas.xlsx',
+create_data = MergeExcelData(file_path = r".\datas.xlsx",
                              reporting_date='31.01.2024', max_age=100)
 merge_data = create_data.merge_data()
 create_pensions_flow = ProcessPensionsFlow(merged_data=merge_data, p_survive=1.0,
                                            p_t_contract=0.0, rate=0.1,
-                                           output_path=r'.\pensions_flow999.xlsx')
+                                           output_path=r".\pensions_flow999.xlsx")
 create_pensions_flow.process()
